@@ -72,8 +72,33 @@ public class UserDto {
     */
     private Integer status;
     
+    /**
+     * 登录方式
+     */
+    private Integer loginType;
     
-    public Long getId() {
+    /**
+     * 性别    
+     */
+    private Integer sex;
+    
+    public Integer getLoginType() {
+		return loginType;
+	}
+
+	public void setLoginType(Integer loginType) {
+		this.loginType = loginType;
+	}
+
+	public Integer getSex() {
+		return sex;
+	}
+
+	public void setSex(Integer sex) {
+		this.sex = sex;
+	}
+
+	public Long getId() {
 	    return id;
     }
 

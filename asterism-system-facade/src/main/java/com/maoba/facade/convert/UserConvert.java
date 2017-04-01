@@ -76,4 +76,14 @@ public class UserConvert {
 		}
 		return entity;
 	}
+    
+	/**
+	 * 部分用户信息进行更新
+	 * @param request
+	 * @return
+	 */
+	public static UserEntity convertApartInfo2Entity(UserRequest request,UserEntity oldEntity) {
+		BeanUtils.copyProperties(request, oldEntity);
+		return oldEntity;
+	}
 }

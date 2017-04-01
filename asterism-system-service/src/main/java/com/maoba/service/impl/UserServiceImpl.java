@@ -87,4 +87,14 @@ public class UserServiceImpl implements UserService{
         	 }
          }		
 	}
+    
+	@Override
+	public void updateApartUserInfo(UserRequest request) {
+		UserEntity oldEntity = userMapper.selectByPrimaryKey(request.getId());
+		Integer oldStatus = oldEntity.getStatus();
+		UserEntity entity = UserConvert.convertApartInfo2Entity(request,oldEntity);
+		entity.setUpdateTime(new Date());
+		entity.setStatus(oldStatus);
+		userMapper.updateByPrimaryKey(entity);
+	}
 }

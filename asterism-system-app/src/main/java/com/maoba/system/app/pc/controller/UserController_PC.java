@@ -123,6 +123,43 @@ public class UserController_PC {
 	    }
 	    
 	    /**
+	     * 更新用户信息
+	     * [自动重置密码]
+	     * @param request 
+	     * @param currentUserInfo
+	     * @return
+	     */
+	    @RequestMapping(method = RequestMethod.POST ,value ="/update")
+	    @ResponseBody
+	    public BaseResponse updateUser(UserRequest request,@CurrentUser CurrentUserInfo currentUserInfo){
+	    	 Long userId = currentUserInfo.getUserId();
+	    	 request.setId(userId);
+	    	 //获取相关的盐
+		     RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();
+			 String salt = randomNumberGenerator.nextBytes().toHex();
+			 request.setSalt(salt);
+	         request.setTerminalType(TerminalTypeEnum.TERMINAL_PC.getValue());
+	            
+			    //设置租户 id
+			 request.setTenantId(currentUserInfo.getTenantId());
+			 Integer loginType = request.getLoginType();
+			    
+			    //邮箱方式注册设置加密密码
+			 if(LoginTypeEnum.SYSTEM_EMAIL_LOGIN.getType() == loginType){
+			    	request.setUserPwd(this.getEncryptPassword(salt, request.getUserPwd(), null, request.getEmail()));
+			    	
+			    //手机方式注册设置加密密码
+			 }else if(LoginTypeEnum.SYSTEM_CELLPHONE_LOGIN.getType() == loginType){
+			    	request.setUserPwd(this.getEncryptPassword(salt, request.getUserPwd(), null, request.getCellPhoneNum()));
+			 }
+	    	 
+	    	 //更新部分用户的信息
+	    	 userService.updateApartUserInfo(request);
+	    	 return BaseResponse.getSuccessResponse(new Date());	
+	    }
+	    
+	    
+	    /**
 	     * 获取加密后的密码
 	     * @param salt 盐
 	     * @param password 明文密码

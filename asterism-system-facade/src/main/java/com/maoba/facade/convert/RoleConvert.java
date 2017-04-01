@@ -1,5 +1,10 @@
 package com.maoba.facade.convert;
+import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
+
+import com.maoba.facade.dto.RoleDto;
 import com.maoba.facade.dto.requestdto.RoleRequest;
 import com.maoba.system.domain.RoleEntity;
 
@@ -21,6 +26,19 @@ public class RoleConvert {
 			BeanUtils.copyProperties(request, entity);
 		}
 		return entity;
+	}
+     
+	/**
+	 * 实体类转换成dto
+	 * @param entitys
+	 * @return
+	 */
+	public static List<RoleDto> convertEntitys2Dtos(List<RoleEntity> entitys) {
+		if(CollectionUtils.isNotEmpty(entitys)){
+			
+			
+		}
+		return null;
 	}
     
 }

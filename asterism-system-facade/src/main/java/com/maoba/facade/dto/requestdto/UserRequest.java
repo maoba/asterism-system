@@ -3,6 +3,11 @@ package com.maoba.facade.dto.requestdto;
 import java.util.Date;
 
 public class UserRequest {
+	/**
+	 * 用户id
+	 */
+	private Long id;
+	
     /**
      * 用户名称
      */
@@ -74,7 +79,15 @@ public class UserRequest {
     private Integer loginType;
     
     
-    public String getSalt() {
+    public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getSalt() {
 		return salt;
 	}
 

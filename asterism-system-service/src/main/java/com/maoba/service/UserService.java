@@ -5,7 +5,6 @@ import com.github.pagehelper.PageInfo;
 import com.maoba.facade.dto.UserDto;
 import com.maoba.facade.dto.requestdto.UserRequest;
 import com.maoba.facade.dto.responsedto.UserResponse;
-import com.maoba.system.domain.UserEntity;
 /**
  * @author  maoba
  */
@@ -59,4 +58,11 @@ public interface UserService {
 	  * @param ids 
 	  */
 	 void delete(Set<Long> ids);
+     
+	 /**
+	  * 更新部分用户的信息
+	  * @param request
+	  */
+	 void updateApartUserInfo(UserRequest request);
+     
 }
