@@ -1,5 +1,7 @@
 package com.maoba.service;
 
+import java.util.Set;
+
 import com.github.pagehelper.PageInfo;
 import com.maoba.facade.dto.RoleDto;
 import com.maoba.facade.dto.requestdto.RoleRequest;
@@ -21,5 +23,17 @@ public interface RoleService {
 	 * @return
 	 */
 	PageInfo<RoleDto> queryRolesByPage(String name, Long tenantId, Integer pageIndex, Integer pageSize);
+
+	/**
+	 * 删除角色
+	 * @param ids
+	 */
+	void delete(Set<Long> ids);
+    
+	/**
+	 * 更新角色
+	 * @param request
+	 */
+	void update(RoleRequest request);
 
 }

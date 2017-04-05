@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService{
     
 	@Override
 	public void updateApartUserInfo(UserRequest request) {
-		UserEntity oldEntity = userMapper.selectByPrimaryKey(request.getId());
+		UserEntity oldEntity = userMapper.selectByPrimaryKey(Long.parseLong(request.getId()));
 		Integer oldStatus = oldEntity.getStatus();
 		UserEntity entity = UserConvert.convertApartInfo2Entity(request,oldEntity);
 		entity.setUpdateTime(new Date());

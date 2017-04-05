@@ -19,4 +19,10 @@ public interface RolePermissionService {
 	 * @return
 	 */
 	Set<RolePermissionEntity> queryRolePermissionEntity(List<UserRoleEntity> userRoles);
+
+	/**
+	 * 删除
+	 * @param ids
+	 */
+	void deleteByRoleIds(Set<Long> ids);
 }

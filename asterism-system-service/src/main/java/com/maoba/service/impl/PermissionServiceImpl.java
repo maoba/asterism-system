@@ -4,13 +4,14 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.maoba.common.enums.StatusEnum;
 import com.maoba.facade.convert.PermissionConvert;
+import com.maoba.facade.dto.PermissionDto;
 import com.maoba.facade.dto.requestdto.PermissionRequest;
 import com.maoba.facade.dto.responsedto.PermissionTreeResponse;
 import com.maoba.service.PermissionService;
@@ -38,7 +39,7 @@ public class PermissionServiceImpl implements PermissionService{
 	private UserRoleService userRoleService;
 	
 	/**
-	 * 
+	 * 角色权限服务
 	 */
 	@Autowired
 	private RolePermissionService rolePermissionService;
@@ -55,6 +56,17 @@ public class PermissionServiceImpl implements PermissionService{
 			entity.setCreateTime(new Date());
 			permissionMapper.insert(entity);
 		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override//分业查询权限dto
+	public PageInfo<PermissionDto> queryPermissionByPage(String name,Long tenantId, Integer pageIndex, Integer pageSize) {
+		PageHelper.startPage(pageIndex, pageSize, true, null, true);
+		List<PermissionEntity> entitys = permissionMapper.queryPermissionByPage(name,tenantId);
+		PageInfo pageInfo = new PageInfo(entitys);
+		List<PermissionDto> permissionDtos = PermissionConvert.convertEntitys2Dtos(entitys);
+		pageInfo.setList(permissionDtos);
+		return pageInfo;
 	}
 
 	@Override
@@ -106,6 +118,11 @@ public class PermissionServiceImpl implements PermissionService{
 		}
 		return responses;
 	}
-	
-    
+
+	@Override
+	public List<PermissionDto> queryCatalogPermissions() {
+		List<PermissionEntity> entitys = permissionMapper.queryCatalogPermission();
+		List<PermissionDto> permissionDtos = PermissionConvert.convertEntitys2Dtos(entitys);
+		return permissionDtos;
+	}
 }

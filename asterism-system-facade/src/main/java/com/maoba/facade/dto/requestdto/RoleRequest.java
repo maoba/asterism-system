@@ -6,6 +6,11 @@ import java.util.Date;
  */
 public class RoleRequest {
 	/**
+	 * id信息
+	 */
+	private Long id;
+	
+	/**
 	 * 角色名称
 	 */
     private String roleName; 
@@ -36,6 +41,14 @@ public class RoleRequest {
     private Date updateTime;
 
     
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getRoleName() {
 		return roleName;
 	}

@@ -2,15 +2,12 @@ package com.maoba.service.impl;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.maoba.service.UserRoleService;
 import com.maoba.system.dao.UserRoleEntityMapper;
 import com.maoba.system.domain.UserRoleEntity;
-
 /**
  * @author kitty daddy
  * 用户角色服务
@@ -36,5 +33,23 @@ public class UserRoleServiceImpl implements UserRoleService{
 	@Override
 	public List<UserRoleEntity> queryUserRole(long userId, long tenantId) {
 		return userRoleMapper.queryRole(userId, tenantId);
+	}
+
+	@Override//根据角色id进行删除用户角色关系
+	public void deleteByRoleIds(Set<Long> ids) {
+		if(CollectionUtils.isNotEmpty(ids)){
+			for(Long id : ids){
+				userRoleMapper.deleteByRoleId(id);
+			}
+		}
+	}
+
+	@Override//根据用户id进行删除用户角色关系
+	public void deleteByUserId(Set<Long> ids) {
+         if(CollectionUtils.isNotEmpty(ids)){
+        	 for(Long id : ids){
+        		 userRoleMapper.deleteByUserId(id);
+        	 }
+         }		
 	}
 }

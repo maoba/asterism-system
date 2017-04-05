@@ -6,7 +6,7 @@ public class UserRequest {
 	/**
 	 * 用户id
 	 */
-	private Long id;
+	private String id;
 	
     /**
      * 用户名称
@@ -78,12 +78,11 @@ public class UserRequest {
      */
     private Integer loginType;
     
-    
-    public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

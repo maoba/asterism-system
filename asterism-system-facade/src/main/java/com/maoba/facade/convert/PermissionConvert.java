@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 
+import com.maoba.facade.dto.PermissionDto;
 import com.maoba.facade.dto.requestdto.PermissionRequest;
 import com.maoba.facade.dto.responsedto.PermissionTreeResponse;
 import com.maoba.system.domain.PermissionEntity;
@@ -57,6 +58,25 @@ public class PermissionConvert {
 		}
 		response.setChild(childs);
 		return response;
+	}
+    
+	
+	/**
+	 * 实体类转换成权限dto
+	 * @param entitys
+	 * @return
+	 */
+	public static List<PermissionDto> convertEntitys2Dtos(List<PermissionEntity> entitys) {
+		List<PermissionDto> permissionDtos = null;
+		if(CollectionUtils.isNotEmpty(entitys)){
+			 permissionDtos = new ArrayList<PermissionDto>();
+			 for(PermissionEntity entity : entitys){
+				 PermissionDto permissionDto = new PermissionDto();
+				 BeanUtils.copyProperties(entity, permissionDto);
+				 permissionDtos.add(permissionDto);
+			 }
+		}
+		return permissionDtos;
 	}
     
 }

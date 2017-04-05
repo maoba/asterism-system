@@ -1,7 +1,6 @@
 package com.maoba.system.app.pc.controller;
 import java.net.URLDecoder;
 import java.util.Date;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.crypto.RandomNumberGenerator;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.github.pagehelper.PageInfo;
 import com.maoba.annotation.CurrentUser;
 import com.maoba.annotation.CurrentUserInfo;
@@ -23,6 +21,7 @@ import com.maoba.common.enums.CheckPasswordEnum;
 import com.maoba.common.enums.EncryptionEnum;
 import com.maoba.common.enums.LoginTypeEnum;
 import com.maoba.common.enums.TerminalTypeEnum;
+import com.maoba.common.utils.IdSplitUtil;
 import com.maoba.facade.dto.UserDto;
 import com.maoba.facade.dto.requestdto.PasswordRequest;
 import com.maoba.facade.dto.requestdto.UserLoginRequest;
@@ -31,6 +30,7 @@ import com.maoba.facade.dto.responsedto.BaseResponse;
 import com.maoba.facade.dto.responsedto.PageResponse;
 import com.maoba.facade.dto.responsedto.UserResponse;
 import com.maoba.service.SecurityService;
+import com.maoba.service.UserRoleService;
 import com.maoba.service.UserService;
 import com.maoba.util.PublicKeyMap;
 import com.maoba.util.RSAUtils;
@@ -44,6 +44,9 @@ import com.maoba.util.RedisUtil;
 public class UserController_PC {
 	    @Autowired
         private UserService userService;
+	    
+	    @Autowired
+	    private UserRoleService userRoleService;
 	    
 	    @Autowired
 	    private SecurityService securityService;
@@ -132,8 +135,7 @@ public class UserController_PC {
 	    @RequestMapping(method = RequestMethod.POST ,value ="/update")
 	    @ResponseBody
 	    public BaseResponse updateUser(UserRequest request,@CurrentUser CurrentUserInfo currentUserInfo){
-	    	 Long userId = currentUserInfo.getUserId();
-	    	 request.setId(userId);
+	    	 request.setId(request.getId());
 	    	 //获取相关的盐
 		     RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();
 			 String salt = randomNumberGenerator.nextBytes().toHex();
@@ -229,6 +231,25 @@ public class UserController_PC {
 	        return BaseResponse.getSuccessResponse(new Date());
 	    } 
 		
+		
+		/**
+		 * 后台进行逻辑删除
+		 * @param ids
+		 * @return
+		 */
+		@RequestMapping
+		@RequiresAuthentication//表示删除
+		public BaseResponse delete(@RequestParam(value="ids") String ids){
+			//删除用户
+			userService.delete(IdSplitUtil.splitString2Long(ids));
+			
+			//删除用户角色
+			userRoleService.deleteByUserId(IdSplitUtil.splitString2Long(ids));
+			
+			return BaseResponse.getSuccessResponse(new Date());
+		}
+		
+		
 		/**
 		 *  修改密码
 		 * @param modifyPwdDto
@@ -249,7 +270,7 @@ public class UserController_PC {
 				    	currentLoginCellPhone = currentUserInfo.getLoginName();
 				    }
 				    
-				  //获取用户输入的老密码
+				   //获取用户输入的老密码
 					String inputOriginPwd = this.getEncryptPassword(response.getSalt(), request.getOldPwd(),currentLoginCellPhone , currentLoginEmail);
 					
 					//获取该用户本身密码

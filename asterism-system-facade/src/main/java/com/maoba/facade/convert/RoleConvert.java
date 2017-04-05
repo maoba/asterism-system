@@ -1,4 +1,6 @@
 package com.maoba.facade.convert;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -34,11 +36,32 @@ public class RoleConvert {
 	 * @return
 	 */
 	public static List<RoleDto> convertEntitys2Dtos(List<RoleEntity> entitys) {
+		List<RoleDto> roleDtos = null;
 		if(CollectionUtils.isNotEmpty(entitys)){
-			
-			
+			roleDtos = new ArrayList<RoleDto>();
+			for(RoleEntity entity : entitys){
+				RoleDto roleDto = new RoleDto();
+				BeanUtils.copyProperties(entity, roleDto);
+				roleDtos.add(roleDto);
+			}
 		}
-		return null;
+		return roleDtos;
+	}
+    
+	/**
+	 * 将部分request转换成实体类信息
+	 * @param request
+	 * @param oldEntity
+	 * @return
+	 */
+	public static RoleEntity convertRequest2Entity(RoleRequest request,RoleEntity oldEntity) {
+		if(oldEntity!= null){
+			oldEntity.setUpdateTime(new Date());
+			oldEntity.setRoleCode(request.getRoleCode());
+			oldEntity.setRoleName(request.getRoleName());
+			oldEntity.setDescription(request.getDescription());
+		}
+		return oldEntity;
 	}
     
 }

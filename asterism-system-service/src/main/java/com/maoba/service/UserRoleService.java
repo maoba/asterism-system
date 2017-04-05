@@ -1,6 +1,7 @@
 package com.maoba.service;
 import java.util.List;
 import java.util.Set;
+
 import com.maoba.system.domain.UserRoleEntity;
 public interface UserRoleService {
     /**
@@ -18,5 +19,17 @@ public interface UserRoleService {
 	 * @return
 	 */
 	List<UserRoleEntity> queryUserRole(long userId, long tenantId);
+    
+	/**
+	 * 删除角色id
+	 * @param ids
+	 */
+	void deleteByRoleIds(Set<Long> ids);
+    
+	/**
+	 * 根据用户Id进行删除用户角色关系
+	 * @param ids
+	 */
+	void deleteByUserId(Set<Long> ids);
 
 }

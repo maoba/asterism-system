@@ -66,4 +66,13 @@ public class RolePermissionServiceImpl implements RolePermissionService{
 		return rolePermissionEntities;
 	}
 
+	@Override
+	public void deleteByRoleIds(Set<Long> ids) {
+        if(CollectionUtils.isNotEmpty(ids)){
+        	 for(Long id : ids){
+        		 rolePermissionMapper.deleteByRoleId(id);
+        	 }
+        }		
+	}
+
 }
