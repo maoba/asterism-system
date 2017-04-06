@@ -5,6 +5,11 @@ import java.util.Date;
  * 权限请求
  */
 public class PermissionRequest {
+	/**
+	 * id
+	 */
+	private Long id;
+	
     /**
      * 模块名称
      */
@@ -47,6 +52,11 @@ public class PermissionRequest {
     private Long parentId;
     
     /**
+     * 父节点名称
+     */
+    private String parentName;
+    
+    /**
      * 状态 -1:删除 0:失效 1:生效
      */
     private Integer status;
@@ -61,7 +71,36 @@ public class PermissionRequest {
      */
     private Date updateTime;
 
+    /**
+     * 权限图标
+     */
+    private String permissionICO;
     
+    
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getPermissionICO() {
+		return permissionICO;
+	}
+
+	public void setPermissionICO(String permissionICO) {
+		this.permissionICO = permissionICO;
+	}
+
+	public String getParentName() {
+		return parentName;
+	}
+
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
+	}
+
 	public String getModuleName() {
 		return moduleName;
 	}

@@ -1,9 +1,11 @@
 package com.maoba.service;
 
 import java.util.List;
+import java.util.Set;
 
 import com.github.pagehelper.PageInfo;
 import com.maoba.facade.dto.PermissionDto;
+import com.maoba.facade.dto.PermissionTreeDto;
 import com.maoba.facade.dto.requestdto.PermissionRequest;
 import com.maoba.facade.dto.responsedto.PermissionTreeResponse;
 
@@ -39,5 +41,24 @@ public interface PermissionService {
 	 * @return
 	 */
 	List<PermissionDto> queryCatalogPermissions();
+    
+	/**
+	 * 删除权限
+	 * @param ids
+	 */
+	void delete(Set<Long> ids);
+    
+	/**
+	 * 更新权限
+	 * @param request
+	 */
+	void updatePermission(PermissionRequest request);
+    
+	/**
+	 * 根据租户的Id查询权限
+	 * @param tenantId[租户id]
+	 * @return
+	 */
+	List<PermissionTreeDto> queryPermissionByTenantId(Long tenantId);
 
 }

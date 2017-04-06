@@ -1,6 +1,6 @@
 package com.maoba.system.app.pc.controller;
 import java.util.Date;
-
+import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.github.pagehelper.PageInfo;
 import com.maoba.annotation.CurrentUser;
 import com.maoba.annotation.CurrentUserInfo;
 import com.maoba.common.utils.IdSplitUtil;
 import com.maoba.facade.dto.RoleDto;
+import com.maoba.facade.dto.UserRoleDto;
 import com.maoba.facade.dto.requestdto.RoleRequest;
+import com.maoba.facade.dto.requestdto.UserRoleRequest;
 import com.maoba.facade.dto.responsedto.BaseResponse;
 import com.maoba.facade.dto.responsedto.PageResponse;
 import com.maoba.service.RolePermissionService;
@@ -87,7 +88,42 @@ public class RoleController_PC {
 			return BaseResponse.getSuccessResponse(new Date());
 		}
 	    
+		/**
+		 * 获取当前租户之下的所有的角色
+		 * @param currentUserInfo
+		 * @return
+		 */
+		@RequestMapping(method=RequestMethod.GET,value="/queryCurrentTenantRoles")
+		@RequiresAuthentication
+		public BaseResponse queryCurrentTenantRoles(@CurrentUser CurrentUserInfo currentUserInfo){
+			 List<RoleDto> roleDtos = roleService.queryRolesByTenantId(currentUserInfo.getTenantId());
+			 return BaseResponse.getSuccessResponse(new Date(), roleDtos);
+		}
 	    
+		/**
+		 * 根据用户id查询绑定的角色
+		 * @param userId [用户Id]
+		 * @return
+		 */
+		@RequestMapping(method=RequestMethod.GET,value="/queryBandingRoles")
+		@RequiresAuthentication
+		public BaseResponse queryBandingRoles(@RequestParam(value="userId") Long userId,@CurrentUser CurrentUserInfo currentUserInfo){
+			 List<UserRoleDto> userRoleDtos = userRoleService.queryBandingRoles(userId,currentUserInfo.getTenantId());
+			 return BaseResponse.getSuccessResponse(new Date(), userRoleDtos);
+		}
+		
+		/**
+		 * 保存用户角色
+		 */
+		@RequestMapping(method=RequestMethod.POST,value="/saveUserRole")
+		@RequiresAuthentication
+		public BaseResponse saveUserRole(UserRoleRequest request,@CurrentUser CurrentUserInfo currentUserInfo){
+			request.setTenantId(currentUserInfo.getTenantId());
+			userRoleService.saveUserRole(request);
+			return BaseResponse.getSuccessResponse(new Date());
+		}
+		
+		
 	   /**
 	    * 保存角色
 	    * @param request

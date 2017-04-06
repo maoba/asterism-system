@@ -1,11 +1,13 @@
 package com.maoba.facade.convert;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 
 import com.maoba.facade.dto.PermissionDto;
+import com.maoba.facade.dto.PermissionTreeDto;
 import com.maoba.facade.dto.requestdto.PermissionRequest;
 import com.maoba.facade.dto.responsedto.PermissionTreeResponse;
 import com.maoba.system.domain.PermissionEntity;
@@ -77,6 +79,47 @@ public class PermissionConvert {
 			 }
 		}
 		return permissionDtos;
+	}
+
+	/**
+	 * 
+	 * @param oldEntity 老的实体类
+	 * @param request 容器dto
+	 * @return
+	 */
+	public static PermissionEntity convertRequest2Entity(PermissionEntity oldEntity, PermissionRequest request) {
+		if(oldEntity!=null){
+			Date createTime = oldEntity.getCreateTime();
+			Integer status = oldEntity.getStatus();
+			BeanUtils.copyProperties(request, oldEntity);
+			oldEntity.setCreateTime(createTime);
+		    oldEntity.setStatus(status);
+		}
+		return oldEntity;
+	}
+
+	/**
+	 * 实体类转成dto
+	 * @param entities
+	 * @return
+	 */
+	public static List<PermissionTreeDto> convertEntity2TreeDto(List<PermissionEntity> entities) {
+		List<PermissionTreeDto> treeDtos = null;
+        if(CollectionUtils.isNotEmpty(entities)){
+        	treeDtos = new ArrayList<PermissionTreeDto>();
+        	for(PermissionEntity entity : entities){
+        		PermissionTreeDto dto = new PermissionTreeDto();
+        		if(entity.getParentId()==null || entity.getParentId()==0l){
+        			dto.setParentId("#");
+        		}else{
+        			dto.setParentId(entity.getParentId().toString());
+        		}
+        		dto.setId(entity.getId().toString());
+        		dto.setPermissionName(entity.getModuleName());
+        		treeDtos.add(dto);
+        	}
+        }
+		return treeDtos;
 	}
     
 }

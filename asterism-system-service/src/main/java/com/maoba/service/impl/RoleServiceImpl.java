@@ -59,4 +59,11 @@ public class RoleServiceImpl implements RoleService{
          entity = RoleConvert.convertRequest2Entity(request,entity);
          roleEntityMapper.updateByPrimaryKey(entity);
 	}
+
+	@Override
+	public List<RoleDto> queryRolesByTenantId(Long tenantId) {
+		List<RoleEntity> entities = roleEntityMapper.queryRolesByTeanantId(tenantId);
+		List<RoleDto> roleDtos = RoleConvert.convertEntitys2Dtos(entities);
+		return roleDtos;
+	}
 }

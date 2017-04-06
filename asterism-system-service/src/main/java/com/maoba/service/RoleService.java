@@ -1,5 +1,6 @@
 package com.maoba.service;
 
+import java.util.List;
 import java.util.Set;
 
 import com.github.pagehelper.PageInfo;
@@ -35,5 +36,12 @@ public interface RoleService {
 	 * @param request
 	 */
 	void update(RoleRequest request);
+    
+	/**
+	 * 根据租户的id查询租户的信息
+	 * @param tenantId [租户id]
+	 * @return
+	 */
+	List<RoleDto> queryRolesByTenantId(Long tenantId);
 
 }
