@@ -170,7 +170,7 @@ public class PermissionController_PC {
     	List<Long> ids = new ArrayList<Long>();
     	if(CollectionUtils.isNotEmpty(rolePermissionDtos)){
     		for(RolePermissionDto dto : rolePermissionDtos){
-    			ids.add(dto.getId());
+    			ids.add(dto.getPermissionId());
     		}
     	}
     	return BaseResponse.getSuccessResponse(new Date(), ids);
