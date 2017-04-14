@@ -1,4 +1,4 @@
-package com.maoba.system.app.pc.controller;
+package com.maoba.system.app.controller.pc;
 import java.net.URLDecoder;
 import java.util.Date;
 import org.apache.commons.lang.StringUtils;

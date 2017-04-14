@@ -1,4 +1,4 @@
-package com.maoba.system.app.pc.controller;
+package com.maoba.system.app.controller.pc;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

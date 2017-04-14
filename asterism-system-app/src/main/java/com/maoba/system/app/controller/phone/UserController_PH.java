@@ -1,4 +1,4 @@
-package com.maoba.system.app.phone.controller;
+package com.maoba.system.app.controller.phone;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;

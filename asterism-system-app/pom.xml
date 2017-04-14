@@ -22,7 +22,7 @@
     <mybatis-spring-boot>1.2.0</mybatis-spring-boot>
   </properties>
   <dependencies>
-  <!-- Spring Boot Dubbo 依赖 -->
+       <!-- Spring Boot Dubbo 依赖 -->
         <dependency>
             <groupId>io.dubbo.springboot</groupId>
             <artifactId>spring-boot-starter-dubbo</artifactId>
