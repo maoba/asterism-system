@@ -78,6 +78,19 @@ public class UserRequest {
      */
     private Integer loginType;
     
+    /**
+     * 性别 0-男 1-女
+     */
+    private Integer sex;
+    
+	public Integer getSex() {
+		return sex;
+	}
+
+	public void setSex(Integer sex) {
+		this.sex = sex;
+	}
+
 	public String getId() {
 		return id;
 	}

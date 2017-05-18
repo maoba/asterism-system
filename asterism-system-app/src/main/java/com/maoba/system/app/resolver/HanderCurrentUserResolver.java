@@ -25,6 +25,10 @@ import com.maoba.util.SessionRKGenerateUtil;
 public class HanderCurrentUserResolver implements HandlerMethodArgumentResolver{
     @Autowired
 	private RedisUtil redisUtil;
+    
+//    @Autowired
+//    private HttpServletRequest request;
+    
 	public boolean supportsParameter(MethodParameter parameter) {
 		return parameter.hasParameterAnnotation(CurrentUser.class);
 	}

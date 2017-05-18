@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -92,9 +93,9 @@ public class PermissionController_PC {
      * @param currentUser
      * @return
      */
-    @RequestMapping(method = RequestMethod.POST, value = "/save")
+    @RequestMapping(method = RequestMethod.POST, value = "/save", consumes = "application/json")
 	@ResponseBody
-	public BaseResponse savePermission(PermissionRequest request,@CurrentUser CurrentUserInfo currentUser){
+	public BaseResponse savePermission(@RequestBody PermissionRequest request,@CurrentUser CurrentUserInfo currentUser){
     	//设置终端类型
     	request.setTerminalType(TerminalTypeEnum.TERMINAL_PC.getValue());
     	//设置租户Id
@@ -108,9 +109,9 @@ public class PermissionController_PC {
      * @param request
      * @return
      */
-    @RequestMapping(method = RequestMethod.POST,value="/saveRolePermission")
+    @RequestMapping(method = RequestMethod.POST,value="/saveRolePermission", consumes = "application/json")
     @ResponseBody
-    public BaseResponse saveRolePermission(RolePermissionRequest request){
+    public BaseResponse saveRolePermission(@RequestBody RolePermissionRequest request){
     	rolePermissionService.saveRolePermission(request);
     	return BaseResponse.getSuccessResponse(new Date());
     }
@@ -120,9 +121,9 @@ public class PermissionController_PC {
      * 对权限进行更新
      * @return
      */
-    @RequestMapping(method = RequestMethod.POST , value = "update")
+    @RequestMapping(method = RequestMethod.POST , value = "update", consumes = "application/json")
     @ResponseBody
-    public BaseResponse updatePermission(PermissionRequest request,@CurrentUser CurrentUserInfo currentUserInfo){
+    public BaseResponse updatePermission(@RequestBody PermissionRequest request,@CurrentUser CurrentUserInfo currentUserInfo){
     	request.setTenantId(currentUserInfo.getTenantId());
     	permissionService.updatePermission(request);
     	return BaseResponse.getSuccessResponse(new Date());

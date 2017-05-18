@@ -1,6 +1,7 @@
 package com.maoba.system.app.controller.pc;
 import java.net.URLDecoder;
 import java.util.Date;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.crypto.RandomNumberGenerator;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.github.pagehelper.PageInfo;
 import com.maoba.annotation.CurrentUser;
 import com.maoba.annotation.CurrentUserInfo;
@@ -54,6 +56,9 @@ public class UserController_PC {
 	    @Autowired
 	    private RedisUtil redisUtil;
 	    
+	    @Autowired
+	    private HttpServletRequest httpRequest;
+	    
 	    /**
 	     * 分页查询
 	     * @param name 用户名称
@@ -83,7 +88,7 @@ public class UserController_PC {
 	     * @return
 	     */
 	    @RequiresAuthentication
-		@RequestMapping(value="queryCurrentUserInfo",method=RequestMethod.GET,produces = "application/json")
+		@RequestMapping(value="queryCurrentUserInfo",method=RequestMethod.GET)
 		@ResponseBody
 		public UserResponse queryCurrentUserResponse(@CurrentUser CurrentUserInfo currentUserInfo){
 	    	
@@ -96,9 +101,9 @@ public class UserController_PC {
 	     * @param request
 	     * @return
 	     */
-	    @RequestMapping(method = RequestMethod.POST, value = "/save")
+	    @RequestMapping(method = RequestMethod.POST, value = "/save", consumes = "application/json")
 	    @ResponseBody
-	    public BaseResponse saveUser(UserRequest request,@CurrentUser CurrentUserInfo currentUserInfo){
+	    public BaseResponse saveUser(@RequestBody UserRequest request,@CurrentUser CurrentUserInfo currentUserInfo){
 	    	//获取相关的盐
 	    	RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();
 		    String salt = randomNumberGenerator.nextBytes().toHex();
@@ -131,9 +136,9 @@ public class UserController_PC {
 	     * @param currentUserInfo
 	     * @return
 	     */
-	    @RequestMapping(method = RequestMethod.POST ,value ="/update")
+	    @RequestMapping(method = RequestMethod.POST ,value ="/update", consumes = "application/json")
 	    @ResponseBody
-	    public BaseResponse updateUser(UserRequest request,@CurrentUser CurrentUserInfo currentUserInfo){
+	    public BaseResponse updateUser(@RequestBody UserRequest request,@CurrentUser CurrentUserInfo currentUserInfo){
 	    	 request.setId(request.getId());
 	    	 //获取相关的盐
 		     RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();
@@ -215,7 +220,7 @@ public class UserController_PC {
 			if(StringUtils.isEmpty(sessionId)){
 				return BaseResponse.getFailResponse("-200", "登入失败");
 			}
-			return response.getSuccessResponse();
+			return response.getSuccessResponse(sessionId);
 		} 
 		
 		/**
@@ -236,7 +241,7 @@ public class UserController_PC {
 		 * @param ids
 		 * @return
 		 */
-		@RequestMapping
+		@RequestMapping(value="/delete",method=RequestMethod.GET,produces="application/json")
 		@RequiresAuthentication//表示删除
 		public BaseResponse delete(@RequestParam(value="ids") String ids){
 			//删除用户
@@ -255,8 +260,8 @@ public class UserController_PC {
 		 * @param currentUserInfo
 		 * @return
 		 */
-		@RequestMapping(method = RequestMethod.POST,value="modifyPwd")
-		public String modifyPwd(PasswordRequest request,@CurrentUser CurrentUserInfo currentUserInfo){
+		@RequestMapping(method = RequestMethod.POST,value="/modifyPwd",consumes = "application/json")
+		public String modifyPwd(@RequestBody PasswordRequest request,@CurrentUser CurrentUserInfo currentUserInfo){
 			UserResponse response = userService.queryUserById(currentUserInfo.getUserId());
 			String currentLoginEmail = null;
 			String currentLoginCellPhone = null;
